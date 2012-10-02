@@ -1,0 +1,47 @@
+daemon off;
+
+user <%= scope.lookupvar "::luser" %> staff;
+
+worker_processes 2;
+pid <%= scope.lookupvar "nginx::config::pidfile" %>;
+
+events {
+  worker_connections 1024;
+}
+
+http {
+  include mime.types;
+  default_type application/octet-stream;
+
+  log_format main '$remote_addr - $remote_user [$time_local] $status '
+                  '"$request" $body_bytes_sent "$http_referer" '
+                  '"$http_user_agent" "http_x_forwarded_for"';
+
+  access_log <%= scope.lookupvar "nginx::config::logdir" %>/access.log main;
+  error_log  <%= scope.lookupvar "nginx::config::logdir" %>/error.log debug;
+
+  sendfile on;
+
+  tcp_nopush  on;
+  tcp_nodelay off;
+
+  gzip              on;
+  gzip_http_version 1.0;
+  gzip_comp_level   2;
+  gzip_proxied      any;
+
+  include <%= scope.lookupvar "nginx::config::sitesdir" %>/*;
+
+  server {
+    listen      80;
+    server_name localhost;
+
+    location / {
+      root   <%= scope.lookupvar "nginx::config::configdir" %>/public;
+    }
+
+    location /status {
+      proxy_pass  http://unix:<%= scope.lookupvar "github::config::socketdir" %>/setup-monitor;
+    }
+  }
+}
