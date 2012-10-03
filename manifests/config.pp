@@ -19,13 +19,6 @@ class nginx::config {
     owner   => 'root'
   }
 
-  file { '/Library/LaunchDaemons/com.boxen.setup-monitor.plist':
-    content => template('nginx/com.boxen.setup-monitor.plist.erb'),
-    group   => 'wheel',
-    notify  => Service['com.boxen.setup-monitor'],
-    owner   => 'root'
-  }
-
   # Set up all the files and directories nginx expects. We go
   # nonstandard on this mofo to make things as clearly accessible as
   # possible under $BOXEN_HOME.

@@ -20,8 +20,4 @@ class nginx {
     ensure  => running,
     require => Package['boxen/brews/nginx']
   }
-
-  service { 'com.boxen.setup-monitor':
-    ensure   => running,
-  }
 }

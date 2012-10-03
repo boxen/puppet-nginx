@@ -39,9 +39,5 @@ http {
     location / {
       root   <%= scope.lookupvar "nginx::config::configdir" %>/public;
     }
-
-    location /status {
-      proxy_pass  http://unix:<%= scope.lookupvar "boxen::config::socketdir" %>/setup-monitor;
-    }
   }
 }
