@@ -41,7 +41,7 @@ http {
     }
 
     location /status {
-      proxy_pass  http://unix:<%= scope.lookupvar "github::config::socketdir" %>/setup-monitor;
+      proxy_pass  http://unix:<%= scope.lookupvar "boxen::config::socketdir" %>/setup-monitor;
     }
   }
 }

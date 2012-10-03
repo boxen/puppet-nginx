@@ -4,15 +4,15 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.github.setup-monitor</string>
+	<string>com.boxen.setup-monitor</string>
 	<key>Program</key>
-	<string>/opt/github/setup/script/monitor_server</string>
+	<string>/opt/boxen/setup/script/monitor_server</string>
 	<key>Sockets</key>
 	<dict>
 		<key>Listeners</key>
 		<dict>
 			<key>SockPathName</key>
-			<string><%= scope.lookupvar('github::config::socketdir') %>/setup-monitor</string>
+			<string><%= scope.lookupvar('boxen::config::socketdir') %>/setup-monitor</string>
 			<key>SockPathMode</key>
 			<integer>438</integer>
 		</dict>

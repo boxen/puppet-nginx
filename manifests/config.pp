@@ -1,34 +1,34 @@
 class nginx::config {
-  require github::config
+  require boxen::config
 
-  $configdir  = "${github::config::configdir}/nginx"
+  $configdir  = "${boxen::config::configdir}/nginx"
   $configfile = "${configdir}/nginx.conf"
-  $datadir    = "${github::config::datadir}/nginx"
-  $executable = "${github::config::homebrewdir}/sbin/nginx"
-  $logdir     = "${github::config::logdir}/nginx"
+  $datadir    = "${boxen::config::datadir}/nginx"
+  $executable = "${boxen::config::homebrewdir}/sbin/nginx"
+  $logdir     = "${boxen::config::logdir}/nginx"
   $pidfile    = "${datadir}/nginx.pid"
   $sitesdir   = "${configdir}/sites"
 
   # Install our custom plist for nginx. This is one of the very few
   # pieces of setup that takes over priv. ports (80 in this case).
 
-  file { '/Library/LaunchDaemons/com.github.nginx.plist':
-    content => template('nginx/com.github.nginx.plist.erb'),
+  file { '/Library/LaunchDaemons/com.boxen.nginx.plist':
+    content => template('nginx/com.boxen.nginx.plist.erb'),
     group   => 'wheel',
-    notify  => Service['com.github.nginx'],
+    notify  => Service['com.boxen.nginx'],
     owner   => 'root'
   }
 
-  file { '/Library/LaunchDaemons/com.github.setup-monitor.plist':
-    content => template('nginx/com.github.setup-monitor.plist.erb'),
+  file { '/Library/LaunchDaemons/com.boxen.setup-monitor.plist':
+    content => template('nginx/com.boxen.setup-monitor.plist.erb'),
     group   => 'wheel',
-    notify  => Service['com.github.setup-monitor'],
+    notify  => Service['com.boxen.setup-monitor'],
     owner   => 'root'
   }
 
   # Set up all the files and directories nginx expects. We go
   # nonstandard on this mofo to make things as clearly accessible as
-  # possible under $GH_HOME.
+  # possible under $BOXEN_HOME.
 
   file { [$configdir, $datadir, $logdir, $sitesdir]:
     ensure => directory
@@ -36,11 +36,11 @@ class nginx::config {
 
   file { $configfile:
     content => template('nginx/config/nginx/nginx.conf.erb'),
-    notify  => Service['com.github.nginx']
+    notify  => Service['com.boxen.nginx']
   }
 
   file { "${configdir}/mime.types":
-    notify  => Service['com.github.nginx'],
+    notify  => Service['com.boxen.nginx'],
     source  => 'puppet:///modules/nginx/config/nginx/mime.types'
   }
 

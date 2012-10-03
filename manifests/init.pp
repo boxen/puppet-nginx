@@ -1,27 +1,27 @@
 class nginx {
   require nginx::config
 
-  package { 'github/brews/nginx':
-    ensure => '1.0.14-github1',
-    notify => Service['com.github.nginx']
+  package { 'boxen/brews/nginx':
+    ensure => '1.0.14-boxen1',
+    notify => Service['com.boxen.nginx']
   }
 
   # Remove Homebrew's nginx config to avoid confusion.
 
-  file { "${github::config::home}/homebrew/etc/nginx":
+  file { "${boxen::config::home}/homebrew/etc/nginx":
     ensure  => absent,
     force   => true,
     recurse => true,
-    require => Package['github/brews/nginx']
+    require => Package['boxen/brews/nginx']
   }
 
 
-  service { 'com.github.nginx':
+  service { 'com.boxen.nginx':
     ensure  => running,
-    require => Package['github/brews/nginx']
+    require => Package['boxen/brews/nginx']
   }
 
-  service { 'com.github.setup-monitor':
+  service { 'com.boxen.setup-monitor':
     ensure   => running,
   }
 }
