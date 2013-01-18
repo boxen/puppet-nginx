@@ -15,9 +15,13 @@ class nginx {
     require => Package['boxen/brews/nginx']
   }
 
-
-  service { 'com.boxen.nginx':
+  service { 'dev.nginx':
     ensure  => running,
     require => Package['boxen/brews/nginx']
+  }
+
+  service { 'com.boxen.nginx': # replaced by dev.nginx
+    before => Service['dev.nginx'],
+    enable => false
   }
 }

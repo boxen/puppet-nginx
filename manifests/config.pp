@@ -12,10 +12,10 @@ class nginx::config {
   # Install our custom plist for nginx. This is one of the very few
   # pieces of setup that takes over priv. ports (80 in this case).
 
-  file { '/Library/LaunchDaemons/com.boxen.nginx.plist':
-    content => template('nginx/com.boxen.nginx.plist.erb'),
+  file { '/Library/LaunchDaemons/dev.nginx.plist':
+    content => template('nginx/dev.nginx.plist.erb'),
     group   => 'wheel',
-    notify  => Service['com.boxen.nginx'],
+    notify  => Service['dev.nginx'],
     owner   => 'root'
   }
 
@@ -29,11 +29,11 @@ class nginx::config {
 
   file { $configfile:
     content => template('nginx/config/nginx/nginx.conf.erb'),
-    notify  => Service['com.boxen.nginx']
+    notify  => Service['dev.nginx']
   }
 
   file { "${configdir}/mime.types":
-    notify  => Service['com.boxen.nginx'],
+    notify  => Service['dev.nginx'],
     source  => 'puppet:///modules/nginx/config/nginx/mime.types'
   }
 
