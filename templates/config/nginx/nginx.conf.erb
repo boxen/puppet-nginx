@@ -1,6 +1,6 @@
 daemon off;
 
-user <%= scope.lookupvar "::luser" %> staff;
+user <%= scope.lookupvar "::boxen_user" %> staff;
 
 worker_processes 2;
 pid <%= scope.lookupvar "nginx::config::pidfile" %>;

@@ -1,5 +1,52 @@
 class nginx {
   require nginx::config
+  require homebrew
+
+  # Install our custom plist for nginx. This is one of the very few
+  # pieces of setup that takes over priv. ports (80 in this case).
+
+  file { '/Library/LaunchDaemons/dev.nginx.plist':
+    content => template('nginx/dev.nginx.plist.erb'),
+    group   => 'wheel',
+    notify  => Service['dev.nginx'],
+    owner   => 'root'
+  }
+
+  # Set up all the files and directories nginx expects. We go
+  # nonstandard on this mofo to make things as clearly accessible as
+  # possible under $BOXEN_HOME.
+
+  file { [
+    $nginx::config::configdir,
+    $nginx::config::datadir,
+    $nginx::config::logdir,
+    $nginx::config::sitesdir
+  ]:
+    ensure => directory
+  }
+
+  file { $nginx::config::configfile:
+    content => template('nginx/config/nginx/nginx.conf.erb'),
+    notify  => Service['dev.nginx']
+  }
+
+  file { "${nginx::config::configdir}/mime.types":
+    notify  => Service['dev.nginx'],
+    source  => 'puppet:///modules/nginx/config/nginx/mime.types'
+  }
+
+  # Set up a very friendly little default one-page site for when
+  # people hit http://localhost.
+
+  file { "${nginx::config::configdir}/public":
+    ensure  => directory,
+    recurse => true,
+    source  => 'puppet:///modules/nginx/config/nginx/public'
+  }
+
+  homebrew::formula { 'nginx':
+    before => Package['boxen/brews/nginx'],
+  }
 
   package { 'boxen/brews/nginx':
     ensure => '1.0.14-boxen1',
