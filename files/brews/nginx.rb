@@ -3,13 +3,8 @@ require 'formula'
 class Nginx < Formula
   homepage 'http://nginx.org/'
   url 'http://nginx.org/download/nginx-1.0.14.tar.gz'
-  md5 '019844e48c34952253ca26dd6e28c35c'
+  sha1 'f74cbda4f726327841abe06676c6034198427ce9'
   version '1.0.14-boxen1'
-
-  devel do
-    url 'http://nginx.org/download/nginx-1.1.18.tar.gz'
-    md5 '82f4b4b1fba68f5f83cc2c641fb6c4c5'
-  end
 
   depends_on 'pcre'
 
