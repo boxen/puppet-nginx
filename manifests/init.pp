@@ -1,6 +1,6 @@
 class nginx {
-  require nginx::config
-  require homebrew
+  include nginx::config
+  include homebrew
 
   # Install our custom plist for nginx. This is one of the very few
   # pieces of setup that takes over priv. ports (80 in this case).

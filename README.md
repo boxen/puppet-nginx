@@ -1,11 +1,13 @@
 # nginx Puppet Module for Boxen
 
-Requires the following boxen modules:
-
-* `boxen`
-
 ## Usage
 
 ```puppet
 include nginx
 ```
+
+## Required Puppet Modules
+
+* boxen
+* homebrew
+* stdlib
