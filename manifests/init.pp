@@ -49,8 +49,8 @@ class nginx {
   }
 
   package { 'boxen/brews/nginx':
-    ensure => '1.0.14-boxen1',
-    notify => Service['com.boxen.nginx']
+    ensure => '1.2.7-boxen1',
+    notify => Service['dev.nginx']
   }
 
   # Remove Homebrew's nginx config to avoid confusion.
@@ -65,10 +65,5 @@ class nginx {
   service { 'dev.nginx':
     ensure  => running,
     require => Package['boxen/brews/nginx']
-  }
-
-  service { 'com.boxen.nginx': # replaced by dev.nginx
-    before => Service['dev.nginx'],
-    enable => false
   }
 }
