@@ -2,9 +2,9 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.14.tar.gz'
-  sha1 'f74cbda4f726327841abe06676c6034198427ce9'
-  version '1.0.14-boxen1'
+  url 'http://nginx.org/download/nginx-1.2.7.tar.gz'
+  sha1 '65309abde9d683ece737da7a354c8fae24e15ecb'
+  version '1.2.7-boxen1'
 
   depends_on 'pcre'
 
@@ -34,6 +34,7 @@ class Nginx < Formula
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
+            "--with-ipv6",
             "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
             "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
             "--conf-path=/opt/boxen/config/nginx/nginx.conf",
