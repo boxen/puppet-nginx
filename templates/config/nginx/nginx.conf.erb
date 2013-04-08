@@ -30,8 +30,6 @@ http {
   gzip_comp_level   2;
   gzip_proxied      any;
 
-  include <%= scope.lookupvar "nginx::config::sitesdir" %>/*;
-
   server {
     listen      80;
     server_name localhost;
@@ -40,4 +38,6 @@ http {
       root   <%= scope.lookupvar "nginx::config::configdir" %>/public;
     }
   }
+
+  include <%= scope.lookupvar "nginx::config::sitesdir" %>/*;
 }
