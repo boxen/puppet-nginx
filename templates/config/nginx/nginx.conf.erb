@@ -30,6 +30,11 @@ http {
   gzip_comp_level   2;
   gzip_proxied      any;
 
+  server_names_hash_bucket_size 128;
+  server_names_hash_max_size 20000;
+  proxy_headers_hash_bucket_size 128;
+  proxy_headers_hash_max_size 20000;
+
   server {
     listen      80;
     server_name localhost;
