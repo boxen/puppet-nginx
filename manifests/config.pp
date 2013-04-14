@@ -1,3 +1,5 @@
+#Config for nginx
+#
 class nginx::config {
   require boxen::config
 
