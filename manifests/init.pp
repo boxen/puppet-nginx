@@ -1,3 +1,5 @@
+# Install nginx
+#
 class nginx {
   include nginx::config
   include homebrew
