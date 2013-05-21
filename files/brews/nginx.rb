@@ -12,8 +12,9 @@ class Nginx < Formula
 
   def options
     [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
+      ['--with-passenger',   "Compile with support for Phusion Passenger module"],
+      ['--with-webdav',      "Compile with support for WebDAV module"],
+      ['--with-gzip-static', "Compile with support for Gzip Static module"]
     ]
   end
 
@@ -43,6 +44,7 @@ class Nginx < Formula
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << "--with-http_gzip_static_module" if ARGV.include? '--with-gzip-static'
 
     system "./configure", *args
     system "make"
