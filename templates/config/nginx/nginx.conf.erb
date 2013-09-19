@@ -37,14 +37,5 @@ http {
 
   underscores_in_headers on;
 
-  server {
-    listen      80 default_server;
-    server_name localhost;
-
-    location / {
-      root   <%= scope.lookupvar "nginx::config::configdir" %>/public;
-    }
-  }
-
   include <%= scope.lookupvar "nginx::config::sitesdir" %>/*;
 }
