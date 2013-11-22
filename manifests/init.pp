@@ -98,7 +98,7 @@ class nginx(
     }
 
     default: {
-      fail("Nginx#ensure must be present or absent!")
+      fail('Nginx#ensure must be present or absent!')
     }
   }
 }
