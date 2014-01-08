@@ -14,7 +14,8 @@ class Nginx < Formula
     [
       ['--with-passenger',   "Compile with support for Phusion Passenger module"],
       ['--with-webdav',      "Compile with support for WebDAV module"],
-      ['--with-gzip-static', "Compile with support for Gzip Static module"]
+      ['--with-gzip-static', "Compile with support for Gzip Static module"],
+      ['--with-weak-etag',   "Compile with support for weak ETag"]
     ]
   end
 
@@ -32,6 +33,11 @@ class Nginx < Formula
   end
 
   def install
+    if ARGV.include? '--with-weak-etag'
+      output = `cat #{File.expand_path("../nginx_weak_etag.patch", __FILE__)} | patch -p1 2>&1`
+      raise "weak-etag patch failed: #{output}" unless $?.success?
+    end
+
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",

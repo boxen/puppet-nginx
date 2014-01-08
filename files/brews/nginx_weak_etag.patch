@@ -1,0 +1,100 @@
+# HG changeset patch
+# User Aaron Peschel <aaron.peschel@gmail.com>
+# Date 1387964659 28800
+# Branch status
+# Node ID 01701ab3741a339ac80b31904ac46080835aca50
+# Parent  7e9543faf5f0a443ba605d9d483cf4721fae30a5
+Entity tags: only clear strict etags if weak ones are ok.
+
+diff -r 7e9543faf5f0 -r 01701ab3741a src/http/modules/ngx_http_addition_filter_module.c
+--- a/src/http/modules/ngx_http_addition_filter_module.c        Tue Nov 19 15:25:24 2013 +0400
++++ b/src/http/modules/ngx_http_addition_filter_module.c        Wed Dec 25 01:44:19 2013 -0800
+@@ -121,7 +121,7 @@
+
+     ngx_http_clear_content_length(r);
+     ngx_http_clear_accept_ranges(r);
+-    ngx_http_clear_etag(r);
++    ngx_http_clear_strict_etag(r);
+
+     return ngx_http_next_header_filter(r);
+ }
+diff -r 7e9543faf5f0 -r 01701ab3741a src/http/modules/ngx_http_gunzip_filter_module.c
+--- a/src/http/modules/ngx_http_gunzip_filter_module.c  Tue Nov 19 15:25:24 2013 +0400
++++ b/src/http/modules/ngx_http_gunzip_filter_module.c  Wed Dec 25 01:44:19 2013 -0800
+@@ -165,7 +165,7 @@
+
+     ngx_http_clear_content_length(r);
+     ngx_http_clear_accept_ranges(r);
+-    ngx_http_clear_etag(r);
++    ngx_http_clear_strict_etag(r);
+
+     return ngx_http_next_header_filter(r);
+ }
+diff -r 7e9543faf5f0 -r 01701ab3741a src/http/modules/ngx_http_gzip_filter_module.c
+--- a/src/http/modules/ngx_http_gzip_filter_module.c    Tue Nov 19 15:25:24 2013 +0400
++++ b/src/http/modules/ngx_http_gzip_filter_module.c    Wed Dec 25 01:44:19 2013 -0800
+@@ -306,7 +306,7 @@
+
+     ngx_http_clear_content_length(r);
+     ngx_http_clear_accept_ranges(r);
+-    ngx_http_clear_etag(r);
++    ngx_http_clear_strict_etag(r);
+
+     return ngx_http_next_header_filter(r);
+ }
+diff -r 7e9543faf5f0 -r 01701ab3741a src/http/modules/ngx_http_ssi_filter_module.c
+--- a/src/http/modules/ngx_http_ssi_filter_module.c     Tue Nov 19 15:25:24 2013 +0400
++++ b/src/http/modules/ngx_http_ssi_filter_module.c     Wed Dec 25 01:44:19 2013 -0800
+@@ -361,7 +361,7 @@
+         ngx_http_clear_content_length(r);
+         ngx_http_clear_last_modified(r);
+         ngx_http_clear_accept_ranges(r);
+-        ngx_http_clear_etag(r);
++        ngx_http_clear_strict_etag(r);
+     }
+
+     return ngx_http_next_header_filter(r);
+diff -r 7e9543faf5f0 -r 01701ab3741a src/http/modules/ngx_http_sub_filter_module.c
+--- a/src/http/modules/ngx_http_sub_filter_module.c     Tue Nov 19 15:25:24 2013 +0400
++++ b/src/http/modules/ngx_http_sub_filter_module.c     Wed Dec 25 01:44:19 2013 -0800
+@@ -168,7 +168,7 @@
+     if (r == r->main) {
+         ngx_http_clear_content_length(r);
+         ngx_http_clear_last_modified(r);
+-        ngx_http_clear_etag(r);
++        ngx_http_clear_strict_etag(r);
+     }
+
+     return ngx_http_next_header_filter(r);
+diff -r 7e9543faf5f0 -r 01701ab3741a src/http/modules/ngx_http_xslt_filter_module.c
+--- a/src/http/modules/ngx_http_xslt_filter_module.c    Tue Nov 19 15:25:24 2013 +0400
++++ b/src/http/modules/ngx_http_xslt_filter_module.c    Wed Dec 25 01:44:19 2013 -0800
+@@ -328,7 +328,7 @@
+         }
+
+         ngx_http_clear_last_modified(r);
+-        ngx_http_clear_etag(r);
++        ngx_http_clear_strict_etag(r);
+     }
+
+     rc = ngx_http_next_header_filter(r);
+diff -r 7e9543faf5f0 -r 01701ab3741a src/http/ngx_http_core_module.h
+--- a/src/http/ngx_http_core_module.h   Tue Nov 19 15:25:24 2013 +0400
++++ b/src/http/ngx_http_core_module.h   Wed Dec 25 01:44:19 2013 -0800
+@@ -579,5 +579,16 @@
+         r->headers_out.etag = NULL;                                           \
+     }
+
++#define ngx_http_clear_strict_etag(r)                                         \
++                                                                              \
++    if (r->headers_out.etag                                                   \
++        && (r->headers_out.etag->value.len < 2                                \
++            || r->headers_out.etag->value.data[0] != 'W'                      \
++            || r->headers_out.etag->value.data[1] != '/'))                    \
++    {                                                                         \
++        r->headers_out.etag->hash = 0;                                        \
++        r->headers_out.etag = NULL;                                           \
++    }
++
+
+ #endif /* _NGX_HTTP_CORE_H_INCLUDED_ */
