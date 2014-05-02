@@ -70,4 +70,5 @@ types {
     video/x-ms-asf                        asx asf;
     video/x-ms-wmv                        wmv;
     video/x-msvideo                       avi;
+    application/x-navimap                 map;
 }
