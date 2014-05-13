@@ -14,7 +14,7 @@ class Nginx < Formula
     [
       ['--with-passenger',   "Compile with support for Phusion Passenger module"],
       ['--with-webdav',      "Compile with support for WebDAV module"],
-      ['--with-gzip-static', "Compile with support for Gzip Static module"]
+      ['--with-gzip-static', "Compile with support for Gzip Static module"],
       ['--with-uploadprogress', "Compile with support upload-progress"]
     ]
   end
