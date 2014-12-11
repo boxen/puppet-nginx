@@ -61,7 +61,7 @@ class nginx(
 
       # Remove Homebrew's nginx config to avoid confusion.
 
-      file { "${boxen::config::home}/homebrew/etc/nginx":
+      file { "${boxen::config::homebrewdir}/etc/nginx":
         ensure  => absent,
         force   => true,
         recurse => true,
