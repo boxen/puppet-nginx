@@ -54,6 +54,10 @@ class nginx(
         before => Package['boxen/brews/nginx'],
       }
 
+      file { "${homebrew::config::tapsdir}/boxen-brews/nginx_weak_etag.patch":
+        source  => "puppet:///modules/nginx/brews/nginx_weak_etag.patch",
+      }
+
       package { 'boxen/brews/nginx':
         ensure => '1.4.4-boxen1',
         notify => Service['dev.nginx']
