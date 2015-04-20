@@ -8,8 +8,8 @@ describe 'nginx' do
   end
 
   it do
-    should include_class('nginx::config')
-    should include_class('homebrew')
+    should contain_class('nginx::config')
+    should contain_class('homebrew')
 
     should contain_file('/Library/LaunchDaemons/dev.nginx.plist').with({
       :group  => 'wheel',
@@ -41,7 +41,7 @@ describe 'nginx' do
       with_before('Package[boxen/brews/nginx]')
 
     should contain_package('boxen/brews/nginx').with({
-      :ensure => '1.4.4-boxen1',
+      :ensure => '1.6.2-boxen1',
       :notify => 'Service[dev.nginx]'
     })
 

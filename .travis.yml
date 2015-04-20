@@ -3,4 +3,4 @@ script: "./script/cibuild"
 gemfile: "this/does/not/exist"
 env: GITHUB_API_TOKEN=36a1b2a815b98d755528fa6e09b845965fe1e046 # token of user: some-public-token without any permissions to avoid api rate limit
 rvm:
-  - "1.8.7"
+  - "2.0.0"
