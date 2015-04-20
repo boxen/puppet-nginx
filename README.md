@@ -1,6 +1,6 @@
 # nginx Puppet Module for Boxen
 [![Build
-Status](https://travis-ci.org/boxen/puppet-nginx.png?branch=master)](https://travis-ci.org/boxen/puppet-nginx)
+Status](https://travis-ci.org/zendesk/puppet-nginx.png?branch=master)](https://travis-ci.org/zendesk/puppet-nginx)
 
 ## Usage
 

@@ -8,6 +8,6 @@ describe 'nginx::config' do
   end
 
   it do
-    should include_class('boxen::config')
+    should contain_class('boxen::config')
   end
 end
