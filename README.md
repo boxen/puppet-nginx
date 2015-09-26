@@ -1,6 +1,5 @@
 # nginx Puppet Module for Boxen
-[![Build
-Status](https://travis-ci.org/boxen/puppet-nginx.svg?branch=master)](https://travis-ci.org/boxen/puppet-nginx)
+[![Build Status](https://travis-ci.org/TORO-IO/puppet-nginx.svg?branch=master)](https://travis-ci.org/TORO-IO/puppet-nginx)
 
 ## Usage
 
