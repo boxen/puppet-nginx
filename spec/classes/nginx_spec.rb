@@ -41,7 +41,7 @@ describe 'nginx' do
       with_before('Package[boxen/brews/nginx]')
 
     should contain_package('boxen/brews/nginx').with({
-      :ensure => '1.6.2-boxen1',
+      :ensure => '1.6.2-boxen2',
       :notify => 'Service[dev.nginx]'
     })
 
