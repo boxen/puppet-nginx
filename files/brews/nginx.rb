@@ -14,7 +14,8 @@ class Nginx < Formula
     [
       ['--with-passenger',   "Compile with support for Phusion Passenger module"],
       ['--with-webdav',      "Compile with support for WebDAV module"],
-      ['--with-gzip-static', "Compile with support for Gzip Static module"]
+      ['--with-gzip-static', "Compile with support for Gzip Static module"],
+      ['--with-uploadprogress', "Compile with support upload-progress"]
     ]
   end
 
@@ -31,6 +32,19 @@ class Nginx < Formula
       puts "Unable to install nginx with passenger support. The passenger"
       puts "gem must be installed and passenger-config must be in your path"
       puts "in order to continue."
+      exit
+  end
+
+  def uploadprogress_config_args
+      uploadprogress_root = `/opt/boxen/homebrew/Cellar/upload-progress-nginx-module/0.9.0`
+
+      if File.directory?(uploadprogress_root)
+        return "--add-module=/opt/boxen/homebrew/Cellar/upload-progress-nginx-module/0.9.0"
+      end
+
+      puts "Unable to install nginx with UploadProgress support. The package"
+      puts "must be installed, run:"
+      puts "brew install homebrew/nginx/upload-progress-nginx-module"
       exit
   end
 
