@@ -38,7 +38,7 @@ http {
   underscores_in_headers on;
 
   server {
-    listen      80 default_server;
+    listen      <%= @port %> default_server;
     server_name localhost;
 
     location / {

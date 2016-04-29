@@ -2,6 +2,7 @@
 #
 class nginx(
   $ensure = present,
+  $port = 80,
 ) {
   include nginx::config
   include homebrew
