@@ -2,9 +2,9 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url "http://nginx.org/download/nginx-1.8.0.tar.gz"
-  sha256 "23cca1239990c818d8f6da118320c4979aadf5386deda691b1b7c2c96b9df3d5"
-  version '1.8.0-boxen2'
+  url "http://nginx.org/download/nginx-1.10.0.tar.gz"
+  sha256 "8ed647c3dd65bc4ced03b0e0f6bf9e633eff6b01bac772bcf97077d58bc2be4d"
+  version '1.10.0-boxen1'
 
   depends_on 'pcre'
 
@@ -14,7 +14,8 @@ class Nginx < Formula
     [
       ['--with-passenger',   "Compile with support for Phusion Passenger module"],
       ['--with-webdav',      "Compile with support for WebDAV module"],
-      ['--with-gzip-static', "Compile with support for Gzip Static module"]
+      ['--with-gzip-static', "Compile with support for Gzip Static module"],
+      ['--with-http2',       "Compile with support for the HTTP/2 module"],
     ]
   end
 
@@ -53,6 +54,7 @@ class Nginx < Formula
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
     args << "--with-http_gzip_static_module" if ARGV.include? '--with-gzip-static'
+    args << "--with-http_v2_module" if ARGV.include? "--with-http2"
 
     system "./configure", *args
     system "make"
