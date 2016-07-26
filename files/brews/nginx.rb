@@ -2,9 +2,9 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url "http://nginx.org/download/nginx-1.10.0.tar.gz"
-  sha256 "8ed647c3dd65bc4ced03b0e0f6bf9e633eff6b01bac772bcf97077d58bc2be4d"
-  version '1.10.0-boxen1'
+  url "http://nginx.org/download/nginx-1.10.1.tar.gz"
+  sha256 "1fd35846566485e03c0e318989561c135c598323ff349c503a6c14826487a801"
+  version '1.10.1-boxen1'
 
   depends_on 'pcre'
 
