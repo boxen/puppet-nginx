@@ -23,16 +23,15 @@ class Nginx < Formula
   depends_on "openssl" => :recommended
 
   def passenger_config_args
-      passenger_root = `passenger-config --root`.chomp
+    passenger_root = `passenger-config --root`.chomp
 
-      if File.directory?(passenger_root)
-        return "--add-module=#{passenger_root}/ext/nginx"
-      end
+    if File.directory?(passenger_root)
+      return "--add-module=#{passenger_root}/ext/nginx"
+    end
 
-      puts "Unable to install nginx with passenger support. The passenger"
-      puts "gem must be installed and passenger-config must be in your path"
-      puts "in order to continue."
-      exit
+    raise "Unable to install nginx with passenger support. The passenger " +
+      "gem must be installed and passenger-config must be in your path " +
+      "in order to continue."
   end
 
   def install
