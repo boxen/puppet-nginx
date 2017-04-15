@@ -23,10 +23,10 @@ class Nginx < Formula
   depends_on "openssl" => :recommended
 
   def passenger_config_args
-      passenger_root = `passenger-config --root`.chomp
+      @passenger_root = `passenger-config --root`.chomp
 
-      if File.directory?(passenger_root)
-        return "--add-module=#{passenger_root}/ext/nginx"
+      if File.directory?(@passenger_root)
+        return "--add-module=#{@passenger_root}/ext/nginx"
       end
 
       puts "Unable to install nginx with passenger support. The passenger"
@@ -57,6 +57,7 @@ class Nginx < Formula
     args << "--with-http_v2_module" if ARGV.include? "--with-http2"
 
     system "./configure", *args
+    system "cp -R #{@passenger_root}/ext/* src/core"
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
