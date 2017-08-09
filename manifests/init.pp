@@ -56,7 +56,7 @@ class nginx(
       }
 
       package { 'boxen/brews/nginx':
-        ensure          => '1.10.2-boxen1',
+        ensure          => '1.12.1-boxen1',
         install_options => [
           '--with-http2',
         ],
