@@ -40,12 +40,6 @@ class Nginx < Formula
   end
 
   def install
-    # Changes default port to 8080
-    inreplace "conf/nginx.conf" do |s|
-      s.gsub! "listen       80;", "listen       8080;"
-      s.gsub! "    #}\n\n}", "    #}\n    include servers/*;\n}"
-    end
-
     pcre = Formula["pcre"]
 
     if build.with? "passenger"
@@ -101,35 +95,6 @@ class Nginx < Formula
     end
   end
 
-  def post_install
-    (etc/"nginx/servers").mkpath
-    (var/"run/nginx").mkpath
-
-    # nginx's docroot is #{prefix}/html, this isn't useful, so we symlink it
-    # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
-    # is so the user can redirect it easily to something else if they choose.
-    html = prefix/"html"
-    dst = var/"www"
-
-    if dst.exist?
-      html.rmtree
-      dst.mkpath
-    else
-      dst.dirname.mkpath
-      html.rename(dst)
-    end
-
-    prefix.install_symlink dst => "html"
-
-    # for most of this formula's life the binary has been placed in sbin
-    # and Homebrew used to suggest the user copy the plist for nginx to their
-    # ~/Library/LaunchAgents directory. So we need to have a symlink there
-    # for such cases
-    if rack.subdirs.any? { |d| d.join("sbin").directory? }
-      sbin.install_symlink bin/"nginx"
-    end
-  end
-
   def passenger_caveats; <<-EOS.undent
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
       passenger_root #{Formula["passenger"].opt_libexec}/src/ruby_supportlib/phusion_passenger/locations.ini;
@@ -151,30 +116,6 @@ class Nginx < Formula
   end
 
   plist_options :manual => "nginx"
-
-  def plist; <<-EOS.undent
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <false/>
-        <key>ProgramArguments</key>
-        <array>
-            <string>#{opt_bin}/nginx</string>
-            <string>-g</string>
-            <string>daemon off;</string>
-        </array>
-        <key>WorkingDirectory</key>
-        <string>#{HOMEBREW_PREFIX}</string>
-      </dict>
-    </plist>
-    EOS
-  end
 
   test do
     (testpath/"nginx.conf").write <<-EOS
