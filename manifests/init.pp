@@ -93,7 +93,8 @@ class nginx(
         $nginx::config::logdir,
         $nginx::config::sitesdir
       ]:
-        ensure => absent
+        ensure => absent,
+        force  => true,
       }
 
       package { 'boxen/brews/nginx':
