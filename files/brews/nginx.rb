@@ -47,7 +47,7 @@ class Nginx < Formula
             "--with-ipv6",
             "--with-cc-opt=#{cc_opt}",
             "--with-ld-opt=#{ld_opt}",
-            "--conf-path=/opt/boxen/config/nginx/nginx.conf",
+            "--conf-path=#{etc}/boxen/nginx/nginx.conf",
             "--pid-path=/opt/boxen/data/nginx/nginx.pid",
             "--lock-path=/opt/boxen/data/nginx/nginx.lock"]
 
