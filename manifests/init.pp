@@ -24,12 +24,24 @@ class nginx(
       # possible under $BOXEN_HOME.
 
       file { [
-        $nginx::config::configdir,
         $nginx::config::datadir,
         $nginx::config::logdir,
-        $nginx::config::sitesdir
+        $nginx::config::configdir,
       ]:
-        ensure => directory
+        ensure => directory,
+      }
+
+      file { $nginx::config::sitesdir:
+        ensure => directory,
+        purge => true,
+        force => true,
+        source  => 'puppet:///modules/nginx/emptydir',
+        recurse => "true",
+      }
+
+      file { "${nginx::config::sitesdir}/MANAGED_BY_BOXEN":
+        content => "# Unmanaged files will be removed",
+        require => File[$nginx::config::sitesdir],
       }
 
       file { $nginx::config::configfile:
